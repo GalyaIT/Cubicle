@@ -4,7 +4,7 @@ const router = Router();
 
 
 router.get('/',(req,res)=>{   
-    res.render('about', {layout:false})
+    res.render('about', {title:'About Page'})
 });
 
 module.exports=router;

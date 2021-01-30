@@ -26,5 +26,6 @@ console.log(cube);
     });
 }
 module.exports = {
-    create
+    create,
+    getAll,
 }

@@ -4,10 +4,15 @@ const productService = require('../services/productService');
 const router = Router();
 
 router.get('/', (req, res) => {
-    console.log(req.query);
+    // console.log(req.query);
 
-    let products = productService.getAll(req.query);
-    res.render('home', { title: 'Cubicle', products })
+    productService.getAll(req.query)
+    .then(products=>{
+        console.log(products);
+         res.render('home', { title: 'Cubicle', products })
+    })
+    .catch(()=>res.status(500).end());
+   
 });
 
 
@@ -37,11 +42,11 @@ router.post('/create', validateProduct, (req, res) => {
 });
 
 
-router.get('/details/:productId', (req, res) => {
+router.get('/details/:productId', async (req, res) => {
 
     let { productId } = req.params;
 
-    let product = productService.getOne(productId);
+    let product = await productService.getOne(productId);
     res.render('details', { title: 'Product details', product })
 });
 

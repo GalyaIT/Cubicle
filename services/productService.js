@@ -1,16 +1,17 @@
 const Cube = require('../models/Cube');
 
-const productData=require('../data/productData');
+// const productData=require('../data/productData');
 
 
-function getOne(id) {
-    return productData.getOne(id);
-    // return Cube.getOne(id);
+ function getOne(id) {   
+  return Cube.findById(id).lean();   
 }
 
-function getAll(query) {
-    let products = productData.getAll();
+async function getAll(query) {
+    // let products = productData.getAll();
     // let products = Cube.getAll();
+    let products = await Cube.find({}).lean();
+    console.log(products);
     if (query.search) {
         products = products.filter(x => x.name.toLowerCase().includes(query.search.toLowerCase()));
     }
@@ -23,6 +24,7 @@ function getAll(query) {
     }
 
     // return products.sort((a,b)=>a.difficultyLevel-b.difficultyLevel || a.name.localeCompare(b.name));
+    return products;
 }
 
 function create(data) {

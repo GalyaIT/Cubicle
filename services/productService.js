@@ -5,15 +5,27 @@ let productsData = require('../config/products.json');
 
 const path = require('path');
 
-function getOne(id){
-    return productsData.find(x=>x.id==id);
+function getOne(id) {
+    return productsData.find(x => x.id == id);
 }
 
-function getAll(){
-    return productsData;
+function getAll(query) {
+    let result = productsData;
+    if (query.search) {
+        result = result.filter(x => x.name.toLowerCase().includes(query.search.toLowerCase()));
+    }
+    if(query.from){
+        result=result.filter(x=>Number(x.difficultyLevel)>=query.from);
+        
+    }    if(query.to){
+        result=result.filter(x=>Number(x.difficultyLevel)<=query.to);
+        
+    }
+
+    return result;
 }
 
-function create(data) {
+function create(data, callback) {
     let cube = new Cube(
         uniqId(),
         data.name,
@@ -23,13 +35,15 @@ function create(data) {
     );
 
     productsData.push(cube);
-   
-    fs.writeFile(path.join(__dirname,'../config/products.json'), JSON.stringify(productsData), (err)=>{
-        if(err){
-            console.log(err);
-            return;
-        }
-    });
+
+    fs.writeFile(path.join(__dirname, '../config/products.json'),
+        JSON.stringify(productsData),
+        callback);
+
+    // return fs.writeFile(path.join(__dirname,'../config/products.json'),
+    //  JSON.stringify(productsData),
+    // );
+
 }
 module.exports = {
     create,

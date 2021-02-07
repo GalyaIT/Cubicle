@@ -25,7 +25,7 @@ let isMatch = await bcrypt.compare(password,user.password);
 if(!isMatch){
     throw {message:'Password does not match'}
 }
-let token = jwt.sign({_id:user._id}, SECRET);
+let token = jwt.sign({_id:user._id, username:user.username, roles:['admin']}, SECRET);
 return token;
 }
 module.exports = {

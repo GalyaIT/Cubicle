@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const accessorySchema = new mongoose.Schema({
+    id:mongoose.Types.ObjectId,
     name: {
         type: String,
         required: true,
